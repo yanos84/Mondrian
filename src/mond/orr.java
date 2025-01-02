@@ -1,34 +1,40 @@
 package mond;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Arrays;
 import org.olap4j.metadata.Schema;
 import org.olap4j.Axis;
 import org.olap4j.CellSet;
+import org.olap4j.CellSetAxis;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapStatement;
 import org.olap4j.OlapWrapper;
 import org.olap4j.Position;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 public class orr {
 
 	static Connection connection;
 	static Schema schema;
-	static OlapConnection olapConnection; 
+	static OlapConnection olapConnection;
 
+	/*
+	 * public static void cubeLoad(Schema schema){
+	 * //Méthode pour charger un cube de données
+	 * try{ Cube cube =schema.getCubes().get("tp2");
+	 * System.out.println("Cube ["+cube+"] loaded");
+	 * }catch(Exception e){
+	 * System.out.println("Something wrong while loading the cube");}
+	 * }
+	 */
 
-	/*public static void cubeLoad(Schema schema){
-		//Méthode pour charger un cube de données
-		try{ Cube cube =schema.getCubes().get("tp2");
-		System.out.println("Cube ["+cube+"] loaded");
-		}catch(Exception e){ System.out.println("Something wrong while loading the cube");}
-	 }*/
-
-
-
-	public static void doFirst(){
-		//Pour charger le Driver de mondrian
-		try{Class.forName("mondrian.olap4j.MondrianOlap4jDriver");
+	public static void doFirst() {
+		// Pour charger le Driver de mondrian
+		try {
+			Class.forName("mondrian.olap4j.MondrianOlap4jDriver");
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Driver not found");
 		}
@@ -36,56 +42,74 @@ public class orr {
 
 	public static void doConnection(String param) {
 		// Pour établir une connexion tomcat vers mondrian
-		try{connection  =DriverManager.getConnection(param);
-		OlapWrapper wrapper = (OlapWrapper) connection;
-		olapConnection = wrapper.unwrap(OlapConnection.class);
-		System.out.println("connection to mondrian : established");
-		schema = olapConnection.getOlapSchema();
-		}catch (Exception e) {System.out.println("something wrong with mondrian!!");
-		e.printStackTrace();};
+		try {
+			connection = DriverManager.getConnection(param);
+			OlapWrapper wrapper = (OlapWrapper) connection;
+			olapConnection = wrapper.unwrap(OlapConnection.class);
+			System.out.println("connection to mondrian : established");
+			schema = olapConnection.getOlapSchema();
+		} catch (Exception e) {
+			System.out.println("something wrong with mondrian!!");
+			e.printStackTrace();
+		}
+		;
 
 	}
 
-	public static void displayQuery(String mdx)
-	{
-		/* TODO Attention: Pour plus de deux dimensions, il faut utiliser List<CellSetAxis> cellSetAxes = cellSet.getAxes();
-			 afin de parcourir sur toutes les dimensions les cellules du cube*/
-
-
-		//permet d'afficher le résultat d'une requéte MDX 
-		/*Le résultat est seulement pour deux dimensions columns et rows. 
-		 */
-		try{
+	public static void displayQuery(String mdx, String csvFilePath) {
+		try (FileWriter writer = new FileWriter(csvFilePath)) {
 			OlapStatement statement = olapConnection.createStatement();
 			CellSet cellSet = statement.executeOlapQuery(mdx);
-			//System.out.println(cellSet.getCell(88).getFormattedValue());
 
-			for (Position axis_0:cellSet.getAxes().get( Axis.COLUMNS.axisOrdinal() ).getPositions()) 
-			{
-				System.out.println(axis_0.getMembers().get(0).getName());
-				for (Position axis_1: cellSet.getAxes().get(Axis.ROWS.axisOrdinal()).getPositions())
-				{
-					System.out.print(cellSet.getCell(Arrays.asList(axis_0.getOrdinal(), axis_1.getOrdinal())).getFormattedValue());
-					System.out.print(" | " );
-				}System.out.println();
+			// Extract axes
+			List<CellSetAxis> axes = cellSet.getAxes();
+			if (axes.size() < 2) {
+				throw new RuntimeException("The query should have at least two axes.");
 			}
-		}catch (Exception e) 
-		{
+
+			// Write column headers (Axis 0 members)
+			List<Position> columns = axes.get(Axis.COLUMNS.axisOrdinal()).getPositions();
+			writer.write("Row Members,"); // Placeholder for row headers
+			for (Position column : columns) {
+				writer.write(formatPositionMembers(column) + ",");
+			}
+			writer.write("\n");
+
+			// Write rows and data
+			List<Position> rows = axes.get(Axis.ROWS.axisOrdinal()).getPositions();
+			for (Position row : rows) {
+				writer.write(formatPositionMembers(row) + ","); // Row header
+				for (Position column : columns) {
+					String cellValue = cellSet.getCell(Arrays.asList(column.getOrdinal(), row.getOrdinal()))
+							.getFormattedValue();
+					writer.write(cellValue + ",");
+				}
+				writer.write("\n");
+			}
+
+			System.out.println("Query result saved to CSV: " + csvFilePath);
+		} catch (IOException e) {
+			System.out.println("Error writing to CSV file");
+			e.printStackTrace();
+		} catch (Exception e) {
 			System.out.println("Error while executing MDX query");
 			e.printStackTrace();
 		}
 	}
 
-
-
+	private static String formatPositionMembers(Position position) {
+		StringBuilder builder = new StringBuilder();
+		position.getMembers().forEach(member -> builder.append(member.getName()).append(" "));
+		return builder.toString().trim();
+	}
 
 	public static void main(String[] args) {
-		// test pour une connexion à mondrian et l'execution d'une requete MDX 
 		doFirst();
-		doConnection("jdbc:mondrian:Jdbc=jdbc:postgresql://localhost:5432/warehouse?user=postgres&password=microlife; Catalog=file:tp2.xml; JdbcDrivers=org.postgresql.Driver");
-		String mdx = "SELECT Non empty [Customer].[Name].Members ON COLUMNS, Non empty [Time].[Year].Members ON ROWS from [Sales_Cube]";
-		displayQuery(mdx);
-
+		doConnection(
+				"jdbc:mondrian:Jdbc=jdbc:postgresql://localhost:5432/warehouse?user=postgres&password=microlife; Catalog=file:tp2.xml; JdbcDrivers=org.postgresql.Driver");
+		String mdx = "select NON EMPTY [Product].FirstSibling  ON COLUMNS, NON EMPTY [Time].[Month].Members  ON ROWS  from [Sales_Cube]";
+		String csvFilePath = "output.csv";
+		displayQuery(mdx, csvFilePath);
 	}
 
 }
