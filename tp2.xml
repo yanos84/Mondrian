@@ -1,0 +1,30 @@
+<Schema name="tp">
+<Cube name="Sales_Cube">
+<Table name="sales"/>
+<Dimension name="Time" foreignKey="time_id">
+<Hierarchy hasAll="false" primaryKey="time_id">
+<Table name="time"/>
+<Level name="Year" column="year"/>
+<Level name="Month" column="month"/>
+<Level name="Day" column="day"/>
+</Hierarchy>
+</Dimension>
+ <!-- Customer Dimension -->
+        <Dimension name="Customer" foreignKey="customer_id">
+            <Hierarchy hasAll="true" allMemberName="All Customers" primaryKey="customer_id">
+                <Table name="customer"/>
+                <Level name="First Name " column="fname"/>
+		<Level name="Name" column="lname"/>
+            </Hierarchy>
+        </Dimension>
+ <!-- Product Dimension -->
+        <Dimension name="Product" foreignKey="product_id">
+            <Hierarchy hasAll="true" allMemberName="All Products" primaryKey="product_id">
+                <Table name="product" />
+                <Level name="Name" column="product_name"/>
+            </Hierarchy>
+        </Dimension>
+<Measure name="Store Sales" column="store_sales" aggregator="sum" formatString="#,###.##"/>
+<Measure name="Unit sales" column="units_sales" aggregator="sum" formatString="#,###.00"/>
+</Cube>
+</Schema>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/xmlunit.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/xalan.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/wcf.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/tbutils-wcf.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/standard.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/saxpath.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/saaj-ri.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/saaj-api.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/postgresql-42.7.4.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/olap4j-xmla.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/olap4j.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/mondrian.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/junit.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jsf-api.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jpivot.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jfreechart-1.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jcommon-1.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jaxen-full.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/javacup.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jakarta-regexp-1.2.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jai_core.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/jai_codec.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/groovy-all-1.0-jsr-03.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/fop.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/eigenbase-xom.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/eigenbase-resgen.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/eigenbase-properties.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/dom4j.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/derby.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-vfs-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-vfs.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-math-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-fileupload-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-digester-1.5.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-dbcp-1.2.1.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/commons-beanutils-1.6.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/batik.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/avalon-framework-cvs-20020806.jar"/>
+	<classpathentry kind="lib" path="/home/yanos/Documents/lib/activation.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
